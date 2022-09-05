@@ -1,0 +1,63 @@
+#include <math.h>
+#include <LiquidCrystal.h>
+
+LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+const int analogPin= 0;
+int raw= 0;
+int Vin= 5;
+float Vout= 0;
+float R1= 100;
+float R2= 0;
+float buffer= 0;
+float z,T,D,Tc,Tf;
+float Q=0.00385;
+
+void setup()
+{
+pinMode(analogPin,INPUT);// Configuring pin as input*
+Serial.begin(9600);
+lcd.begin(16,2);
+delay(1000);
+pinMode(8, OUTPUT);//GREEN LED INDICATOR//
+pinMode(9, OUTPUT);//RED LED INDICATOR//
+pinMode(10, OUTPUT);//RELAY ON OFF//
+}
+
+void loop()
+{
+raw=analogRead(analogPin);
+if(raw)
+{
+buffer= raw * Vin;// programming algorithm
+Vout= (buffer)/1168.0;
+
+buffer= (Vin/Vout)-1;
+R2= (R1 * buffer);
+float z= R2/R1;
+float T=((z-1)/Q);
+lcd.setCursor(0,0);
+lcd.print(&quot;in DegreeC= &quot;);
+lcd.print(T);
+lcd.setCursor(0,1);
+/*lcd.print(&quot;in Fahrenheit=&quot;);*/
+//Delay of 1 second for ease of viewing in serial monitor*/
+if (T &gt;= 92)
+{
+digitalWrite(8, LOW);
+digitalWrite(9, HIGH);
+digitalWrite(10, HIGH);
+delay(3600000);
+lcd.print(&quot;in DegreeC= &quot;);
+lcd.print(T);
+lcd.setCursor(0,1);} // turn the RELAY on (HIGH is the voltage level)
+}*/
+/*}
+}
+else
+{
+digitalWrite(8, HIGH);
+digitalWrite(9, LOW);
+digitalWrite(10,LOW); // turn the LED on (HIGH is the voltage level)
+}
+}
+}
